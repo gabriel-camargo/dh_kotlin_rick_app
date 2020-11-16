@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,7 +37,7 @@ class ListaFragment : Fragment() {
         val lista = view.findViewById<RecyclerView>(R.id.lista)
         val manager = LinearLayoutManager(view.context)
 
-        val listaDePersonagens = mutableListOf<PersonagemModel>()
+        var listaDePersonagens = mutableListOf<PersonagemModel>()
         val listaAdapter = ListaAdapter(listaDePersonagens)
 
         lista.apply {
@@ -55,12 +56,16 @@ class ListaFragment : Fragment() {
             showLoading(false)
             notfound(it.isNotEmpty())
 
+            listaDePersonagens.clear()
             listaDePersonagens.addAll(it)
+
             listaAdapter.notifyDataSetChanged()
         })
 
         _viewModel.obterLista()
         showLoading(true)
+
+        initSearch()
     }
 
     fun showLoading(isLoading: Boolean) {
@@ -79,5 +84,23 @@ class ListaFragment : Fragment() {
         } else {
             _view.findViewById<View>(R.id.notfoundLayout).visibility = View.VISIBLE
         }
+    }
+
+    private fun initSearch() {
+        _view.findViewById<SearchView>(R.id.searchView)
+            .setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                _viewModel.buscar(p0)
+                return true
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                if(p0.isNullOrBlank()) {
+                    _viewModel.cancelarBusca()
+                }
+                return true
+            }
+
+        })
     }
 }

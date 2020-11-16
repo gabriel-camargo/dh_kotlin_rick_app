@@ -13,9 +13,9 @@ class PersonagemViewModel(
 ): ViewModel() {
 
     val personagens = MutableLiveData<List<PersonagemModel>>()
-
-    fun obterLista() {
-        repository.obterLista(object: OnResult<ResponseModel<PersonagemModel>> {
+    var personagensAntesDaBusca = listOf<PersonagemModel>()
+    fun obterLista(name: String? = null) {
+        repository.obterLista(name, object: OnResult<ResponseModel<PersonagemModel>> {
             override fun onSucess(result: ResponseModel<PersonagemModel>) {
                 personagens.value = result.results
             }
@@ -24,6 +24,15 @@ class PersonagemViewModel(
                 TODO("Not yet implemented")
             }
         })
+    }
+
+    fun buscar(p0: String?) {
+        personagensAntesDaBusca = personagens.value!!
+        obterLista(p0)
+    }
+
+    fun cancelarBusca() {
+        personagens.value = personagensAntesDaBusca
     }
 
     class PersonagemViewModelFactory(

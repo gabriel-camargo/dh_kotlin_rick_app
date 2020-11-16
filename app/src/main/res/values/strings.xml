@@ -2,4 +2,6 @@
     <string name="app_name">KotlinRickApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="imagem_n_o_encontrado">Imagem - Não encontrado</string>
+    <string name="ops_nada_encontrado">Ops! Nada Encontrado</string>
 </resources>

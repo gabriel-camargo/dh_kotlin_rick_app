@@ -9,11 +9,11 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class PersonagemRepository {
-    public fun obterLista(onResult: OnResult<ResponseModel<PersonagemModel>>) {
+    public fun obterLista(name: String?, onResult: OnResult<ResponseModel<PersonagemModel>>) {
         val client = NetworkUtils.getRetrofitInstance()
         val api = client.create(PersonagemEndpoint::class.java)
 
-        val call = api.obterLista()
+        val call = api.obterLista(name)
 
         call.enqueue(object: Callback<ResponseModel<PersonagemModel>> {
             override fun onResponse(
